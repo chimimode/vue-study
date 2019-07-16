@@ -4,7 +4,7 @@
       <md-subheader>
         <md-field>
       <label>Type here!</label>
-      <md-input v-model="type"></md-input>
+      <md-input v-model="type" @keyup.13="add"></md-input>
       <span class="md-helper-text">새로등록</span>
     </md-field>
       </md-subheader>
@@ -37,7 +37,13 @@ export default {
   name: 'Controls',
   data: () => ({
     notification: ['sound', 'vibrate']
-  })
+  }),
+  methods: {
+    add: function (event) {
+      console.log(this)
+      console.log(event.target.id)
+    }
+  }
 }
 </script>
 
