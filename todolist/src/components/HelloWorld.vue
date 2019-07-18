@@ -1,13 +1,18 @@
 <template>
   <div class="full-control">
+    <div>
+      <span class="md-display-3" id="clock"></span>
+    </div>
     <md-list>
       <md-subheader>
         <md-field>
       <label>Type here!</label>
-      <md-input v-model="type" @keyup.13="add"></md-input>
+      <md-input v-model="todo" @keyup.enter="add"></md-input>
       <span class="md-helper-text">새로등록</span>
     </md-field>
       </md-subheader>
+
+      <my-component></my-component>
 
       <md-list-item>
         <md-checkbox v-model="notification" value="preview" />
@@ -36,15 +41,32 @@
 export default {
   name: 'Controls',
   data: () => ({
-    notification: ['sound', 'vibrate']
+    notification: ['sound', 'vibrate'],
+    test: new Date()
   }),
   methods: {
     add: function (event) {
       console.log(this)
-      console.log(event.target.id)
+      console.log(this.todo)
+    },
+    clock: function () {
+      return nowTime()
     }
   }
 }
+
+function nowTime () {
+  let now = new Date()
+  let ampm = now.getHours() > 12 ? 'PM' : 'AM'
+  let hour = now.getHours() > 12 ? now.getHours() - 12 : now.getHours()
+  hour = hour < 10 ? `0${hour}` : hour
+  let min = now.getMinutes() < 10 ? `0${now.getMinutes()}` : now.getMinutes()
+  let sec = now.getSeconds() < 10 ? `0${now.getSeconds()}` : now.getSeconds()
+
+  document.getElementById('clock').textContent = `${ampm} ${hour}:${min}:${sec}`
+}
+
+setInterval(nowTime, 1000)
 </script>
 
 <style lang="scss" scoped>
