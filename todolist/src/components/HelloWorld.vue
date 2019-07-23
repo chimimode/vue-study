@@ -3,35 +3,25 @@
     <div>
       <span class="md-display-3" id="clock"></span>
     </div>
-    <md-list>
+    <md-list id="items">
       <md-subheader>
         <md-field>
-      <label>Type here!</label>
-      <md-input v-model="todo" @keyup.enter="add"></md-input>
-      <span class="md-helper-text">새로등록</span>
-    </md-field>
+          <label>Type here!</label>
+          <md-input v-model="todoItem" @keyup.enter="add"></md-input>
+          <span class="md-helper-text">새로등록</span>
+        </md-field>
+        <md-button class="md-raised md-accent" v-on:click="add">추가</md-button>
       </md-subheader>
-
-      <my-component></my-component>
 
       <md-list-item>
         <md-checkbox v-model="notification" value="preview" />
-        <span class="md-list-item-text">Show content preview</span>
+        <span class="md-list-item-text">sample data</span>
       </md-list-item>
 
-      <md-list-item>
-        <md-checkbox v-model="notification" value="sound" />
-        <span class="md-list-item-text">Sound</span>
-      </md-list-item>
-
-      <md-list-item>
-        <md-checkbox v-model="notification" value="vibrate" />
-        <span class="md-list-item-text">Vibrate</span>
-      </md-list-item>
-
-      <md-list-item>
-        <md-checkbox v-model="notification" value="light" />
-        <span class="md-list-item-text">Notification light</span>
+      <md-list-item v-for="(todo, i) in todos" :key="i" >
+        <md-checkbox v-model="notification" value="i" />
+        <span class="md-list-item-text">{{ todo }}</span>
+        <md-button class="md-raised md-accent" v-on:click="del">삭제</md-button>
       </md-list-item>
     </md-list>
   </div>
@@ -42,12 +32,19 @@ export default {
   name: 'Controls',
   data: () => ({
     notification: ['sound', 'vibrate'],
-    test: new Date()
+    counter: 0,
+    todoItem: null,
+    todos: []
   }),
   methods: {
     add: function (event) {
-      console.log(this)
-      console.log(this.todo)
+      if (this.todoItem !== undefined) {
+        this.todos.push(this.todoItem)
+      }
+    },
+    del: function (event) {
+      console.log('삭제 완성하고싶다긔')
+      this.todos.splice(0, 1)
     },
     clock: function () {
       return nowTime()

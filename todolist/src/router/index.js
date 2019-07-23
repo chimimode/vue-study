@@ -22,7 +22,9 @@ export default new Router({
   ]
 })
 
-Vue.component('my-component', {
-  // 옵션
-  template: '<div>사용자 정의 컴포넌트 입니다!</div>'
+Vue.component('item', {
+  template: `<md-list-item>
+    <md-checkbox v-model="notification" value="preview" />
+    <span class="md-list-item-text">added list!</span>
+  </md-list-item>`
 })
