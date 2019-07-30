@@ -6,6 +6,14 @@
     <md-list id="items">
       <md-subheader>
         <md-field>
+          <md-select v-model="level" name="level" id="level" placeholder="중요도">
+            <md-option value="중요함">중요함</md-option>
+            <md-option value="보통임">보통임</md-option>
+            <md-option value="안중요함">안중요함</md-option>
+          </md-select>
+        </md-field>
+
+        <md-field>
           <label>Type here!</label>
           <md-input v-model="todoItem" @keyup.enter="add"></md-input>
           <span class="md-helper-text">새로등록</span>
@@ -13,15 +21,12 @@
         <md-button class="md-raised md-accent" v-on:click="add">추가</md-button>
       </md-subheader>
 
-      <md-list-item>
-        <md-checkbox v-model="notification" value="preview" />
-        <span class="md-list-item-text">sample data</span>
-      </md-list-item>
-
-      <md-list-item v-for="(todo, i) in todos" :key="i" >
-        <md-checkbox v-model="notification" value="i" />
+      <md-list-item v-for="(todo, index) in todos" :key=index >
+        <md-checkbox v-model="checkList" :value=index />
         <span class="md-list-item-text">{{ todo }}</span>
-        <md-button class="md-raised md-accent" v-on:click="del">삭제</md-button>
+        <md-button class="md-icon-button md-raised" v-on:click="del(index)">
+          <md-icon>delete</md-icon>
+        </md-button>
       </md-list-item>
     </md-list>
   </div>
@@ -31,20 +36,29 @@
 export default {
   name: 'Controls',
   data: () => ({
-    notification: ['sound', 'vibrate'],
+    checkList: [],
+    level: [],
     counter: 0,
     todoItem: null,
     todos: []
   }),
   methods: {
     add: function (event) {
-      if (this.todoItem !== undefined) {
-        this.todos.push(this.todoItem)
+      if (this.valid()) {
+        if (this.todoItem !== undefined) {
+          this.todos.push(`${this.level}: ${this.todoItem}`)
+        }
+      } else {
+        alert('내용을 입력 해 주세요')
       }
     },
+    valid: function () {
+      const level = this.level
+      const todo = this.todoItem
+      return level !== null && todo !== null
+    },
     del: function (event) {
-      console.log('삭제 완성하고싶다긔')
-      this.todos.splice(0, 1)
+      this.todos.splice(event, 1)
     },
     clock: function () {
       return nowTime()
